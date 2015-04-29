@@ -4,6 +4,8 @@ import java.io.ObjectInputStream;
 import java.io.Serializable;
 import java.net.ServerSocket;
 import java.net.Socket;
+import java.util.concurrent.BlockingQueue;
+import java.util.concurrent.LinkedBlockingQueue;
  
  
 public class Server implements Serializable {
@@ -12,11 +14,13 @@ public class Server implements Serializable {
 	 * 
 	 */
 	private static final long serialVersionUID = 1L;
+	public static BlockingQueue<MessageStruct> unbounded = new LinkedBlockingQueue<MessageStruct>();
+	
 	ServerSocket myServerSocket;
     boolean ServerOn = true;
  
  
-    public Server(final int portnum) 
+    public Server(final int portnum) throws ClassNotFoundException 
     { 
         try
         { 
@@ -49,9 +53,23 @@ public class Server implements Serializable {
                 // MultiThreadedSocket Server accept multiple connections simultaneously. 
  
                 // Start a Service thread 
+                
+                
+                                               
+                ObjectInputStream in = null;
+                in = new ObjectInputStream(clientSocket.getInputStream());
+    			Object obj = in.readObject();
+    			System.out.println("object is"+obj);
+    				
+    			MessageStruct msgrcvd = null;
+                    
+    			msgrcvd = (MessageStruct) obj;
+    			unbounded.add(msgrcvd);
+                in.close();
+                
  
-                ClientServiceThread cliThread = new ClientServiceThread(clientSocket);
-                cliThread.start(); 
+               // ClientServiceThread cliThread = new ClientServiceThread(clientSocket);
+                //cliThread.start(); 
  
             } 
             catch(IOException ioe) 
@@ -78,7 +96,7 @@ public class Server implements Serializable {
     } 
  
   
- 
+ /*
     class ClientServiceThread extends Thread 
     { 
         Socket myClientSocket;
@@ -145,5 +163,5 @@ public class Server implements Serializable {
            
         } 
        	
-    } 
+    } */
 }
