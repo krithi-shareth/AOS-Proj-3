@@ -47,19 +47,17 @@ public class Server implements Serializable {
                 // If execution reaches this point, then it means that a client 
                 // socket has been accepted. 
  
-                // For each client, we will start a service thread to 
-                // service the client requests. This is to demonstrate a 
-                // Multi-Threaded server. Starting a thread also lets our 
-                // MultiThreadedSocket Server accept multiple connections simultaneously. 
- 
-                // Start a Service thread 
+                // For each client, the received object is added onto a linkedblocking queue
+                // ProcessQueMessage thread reads from this queue and processes each request in 
+                // a thread
+                
                 
                 
                                                
                 ObjectInputStream in = null;
                 in = new ObjectInputStream(clientSocket.getInputStream());
     			Object obj = in.readObject();
-    			System.out.println("object is"+obj);
+    			
     				
     			MessageStruct msgrcvd = null;
                     
