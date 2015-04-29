@@ -15,7 +15,19 @@ class MessageStruct implements Serializable
     FileAttributes faobj;
     
     
-
+    public  MessageStruct( int reqID, int msgType, int nodeid, int locktype,String Filename, FileAttributes faobj, int verNum)
+    {
+       this.reqID=reqID;
+       this.msgType=msgType;
+       this.nodeid=nodeid;
+       this.locktype=locktype;
+       this.faobj=faobj;
+       this.filename=Filename;
+       this.verNum=verNum;
+       
+    }
+    
+    //for release message
     public  MessageStruct( int reqID, int msgType, int nodeid, int locktype,String Filename, FileAttributes faobj, int verNum, int RU)
     {
        this.reqID=reqID;
